@@ -25,6 +25,10 @@ public class Memory {
     return pointer;
   }
 
+  public void setPointer(int value) {
+    this.pointer = value;
+  }
+
   public void incrementPointer() {
     this.pointer++;
   }

@@ -29,39 +29,28 @@ public class Memory {
     this.pointer = value;
   }
 
-  public void incrementPointer() {
-    this.pointer++;
-  }
-
-  public void decrementPointer() {
-    this.pointer--;
-  }
-
-  public char readDataFromMemory() {
+  public char readData() {
     return this.array[pointer];
   }
   
-  public void setDataInMemory(int data) {
+  public void setData(int data) {
     this.array[pointer] = (char)data;
   }
-
+  
   public static void main(String[] args) {
+
+    final String PRINT_POINTER = "Pointer = %d\n";
 
     Memory mem = new Memory(64 * 1024);
     
     System.console().printf("SOME TEST TO MEMORY CLASS:\n");
 
-    System.console().printf("Pointer = %d\n", mem.pointer);
+    System.console().printf(PRINT_POINTER, mem.pointer);
     
-    mem.incrementPointer();
-    System.console().printf("Pointer = %d\n", mem.pointer);
+    System.console().printf(PRINT_POINTER, (int)mem.readData());
 
-    mem.decrementPointer();
-    System.console().printf("Pointer = %d\n", mem.pointer);
-
-    System.console().printf("Pointer = %d\n", (int)mem.readDataFromMemory());
-    mem.setDataInMemory(64);
-    System.console().printf("Pointer = %d\n", (int)mem.readDataFromMemory());
+    mem.setData(64);
+    System.console().printf(PRINT_POINTER, (int)mem.readData());
 
   }
 }

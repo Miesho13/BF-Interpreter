@@ -1,35 +1,76 @@
 import java.util.Scanner;
 
-public class Instruction {
+public final class Instruction {
+
+  Instruction () {
+    // not called
+  }
   
-  public static void incrementP(Memory mem) {
-    mem.incrementPointer();
+  public static int incrementDataPointer(Memory array) {
+    int p = array.getPointer();
+
+    if ((p - 1) >= array.getArraySizie()) {
+      return -1;
+    }
+    else {
+      p++;
+      array.setPointer(p);
+      return 0;
+    }
   }
 
-  public static void decrementP(Memory mem) {
-    mem.decrementPointer();
+  public static int decrementDataPointer(Memory array) {
+    int p = array.getPointer();
+
+    if(p <= 0) {
+      return -1;
+    }
+    else {
+      p--;
+      array.setPointer(p);
+      return 0;
+    }
   }
 
-  public static void incrementData(Memory mem) {
-    int data = (int)mem.readDataFromMemory();
+  public static int incrementDataValue(Memory array) {
+    int data = array.readData();
 
-    data++;
-
-    mem.setDataInMemory((char)data);
+    if (data >= 126) {
+      return -1;
+    }
+    else {
+      data++;
+      array.setData(data);
+      
+      return 0;
+    }
   }
 
-  public static void printByteOnOutStream(Memory mem) {
-    System.console().printf("%c", mem.readDataFromMemory());
+  public static int decrementDataValue(Memory array) {
+    int data = array.readData();
+
+    if (data <= -127) {
+      return -1;
+    }
+    else {
+      data--;
+      array.setData(data);
+
+      return 0;
+    }
   }
 
-  public static void scanByteOfInput(Memory mem, Scanner scan) {
-    char scanData = scan.nextLine().charAt(0);
-
-    mem.setDataInMemory(scanData);
+  public static int outputByte(Memory array) {
+    int data = array.readData();
+    
+    System.console().printf("%c", data);
+    
+    return 0;
   }
 
-  public static void jump(Memory mem, int where) {
-    mem.setPointer(where);
+  public static int acceptByte(Memory array, Scanner in) {
+    char data = in.nextLine().charAt(0);
+    array.setData(data);
+    return 0;
   }
-
 }

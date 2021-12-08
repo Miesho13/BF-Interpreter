@@ -4,15 +4,19 @@
  */
 public class Memory {
 
-  private char[] array;
+  private byte[] array;
   
   private int pointer;
+
+  private int arraySizie;
+
   /**
    * Constructor for Memory class
    * @param arraySize a value that determines the size of our memory   
    */
   Memory(int arraySize) {
-    this.array = new char [arraySize];
+    this.arraySizie = arraySize;
+    this.array = new byte [arraySize];
     this.pointer = 0;
   }
 
@@ -29,16 +33,24 @@ public class Memory {
     this.pointer = value;
   }
 
-  public char readData() {
+  public int readData() {
     return this.array[pointer];
   }
   
   public void setData(int data) {
-    this.array[pointer] = (char)data;
+    if (data >= -128 && data <= 127) {
+      this.array[pointer] = (byte)data;
+    }
+    else {
+      this.array[pointer] = 0;
+    }
   }
-  
-  public static void main(String[] args) {
 
+  public int getArraySizie() {
+    return this.arraySizie;
+  }
+
+  public static void memoryComplexTest() {
     final String PRINT_POINTER = "Pointer = %d\n";
 
     Memory mem = new Memory(64 * 1024);
@@ -47,10 +59,14 @@ public class Memory {
 
     System.console().printf(PRINT_POINTER, mem.pointer);
     
-    System.console().printf(PRINT_POINTER, (int)mem.readData());
+    System.console().printf(PRINT_POINTER, mem.readData());
 
     mem.setData(64);
-    System.console().printf(PRINT_POINTER, (int)mem.readData());
 
+    System.console().printf(PRINT_POINTER, mem.readData());
+  }
+  
+  public static void main(String[] args) {
+    memoryComplexTest();
   }
 }

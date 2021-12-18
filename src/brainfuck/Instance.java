@@ -43,6 +43,11 @@ public class Instance {
   }
 
 
+  public boolean isWokring() {
+    return this.isWorkingFlag;
+  }
+
+
   public String getIncturctionVector() {
     return instrucionVector;
   }
@@ -50,11 +55,6 @@ public class Instance {
 
   public int getInstructionCounter() {
     return this.instructionCounter;
-  }
-
-
-  public boolean isWokring() {
-    return this.isWorkingFlag;
   }
 
 
@@ -82,13 +82,8 @@ public class Instance {
     }
   }
 
-  public void printDequeue() {
-    System.out.print("DQ: "+this.dqReturnStack);
-  }
 
   public void oneStep() {
-    //System.console().printf("%c  ",instrucionVector.charAt(instructionCounter));
-  
     if (this.instrucionVector.length() != 0)
     {
       switch (this.instrucionVector.charAt(this.instructionCounter)) {
@@ -115,13 +110,15 @@ public class Instance {
           break;
         case ']':
           endLoop();
+          break;
+        case '\\':
+          stopInterpreter();
           break;    
         default:
-          stopInterpreter();
+          
           break;
       }
       this.instructionCounter++;
-      //System.console().printf("Memory value: %d | ", memory.readData());
     }
     else {
       stopInterpreter();
@@ -159,7 +156,7 @@ public class Instance {
 
     }
     catch (FileNotFoundException e) {
-      System.console().printf("File not found\n");
+      System.console().printf("BFInterpreter: fatal error: File not found\n");
       e.printStackTrace();
     
     }

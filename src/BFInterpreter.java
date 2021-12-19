@@ -21,7 +21,6 @@ public class BFInterpreter {
       instance.loadFromFile(arg[0]);
       while(instance.isWokring()) {
         instance.oneStep();
-        //instance.intrepreterDebugLog();
       }
     }
 

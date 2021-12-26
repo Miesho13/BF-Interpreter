@@ -19,8 +19,6 @@ public class Instance {
 
   private Deque<Integer> dqReturnJump;
 
-  private Deque<Integer> dqSkipJump;
-
   private Memory memory;
 
   private Scanner userInput;

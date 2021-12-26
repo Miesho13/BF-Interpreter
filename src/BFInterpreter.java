@@ -24,7 +24,7 @@ public class BFInterpreter {
       }
     }
 
-    System.console().printf("\nInterpret END");
+    System.console().printf("\niterpreter Terminated");
   }
 
   static void noArgumentError() {

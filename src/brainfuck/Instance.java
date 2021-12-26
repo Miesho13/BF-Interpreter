@@ -41,8 +41,6 @@ public class Instance {
 
     this.dqReturnJump = new LinkedList<Integer>();
 
-    this.dqSkipJump = new LinkedList<Integer>();
-
     this.memory = new Memory(memorySize);
 
     this.userInput = new Scanner(System.in);

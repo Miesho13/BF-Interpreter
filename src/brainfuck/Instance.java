@@ -17,7 +17,9 @@ public class Instance {
 
   private String instrucionVector;
 
-  private Deque<Integer> dqReturnStack;
+  private Deque<Integer> dqReturnJump;
+
+  private Deque<Integer> dqSkipJump;
 
   private Memory memory;
 
@@ -37,7 +39,9 @@ public class Instance {
 
     this.instrucionVector = "";
 
-    this.dqReturnStack = new LinkedList<Integer>();
+    this.dqReturnJump = new LinkedList<Integer>();
+
+    this.dqSkipJump = new LinkedList<Integer>();
 
     this.memory = new Memory(memorySize);
 
@@ -57,22 +61,37 @@ public class Instance {
 
   public void beginLoop() {
     if (memory.readData() == 0) {
-      while (this.instrucionVector.charAt(instructionCounter) != ']') {
-        instructionCounter++;
-      }
-      
-      
+      int endBracket = 0;
+      int beginBracket = 0;
+      while (true) {
+        if (this.instrucionVector.charAt(this.instructionCounter) == '[') {
+          beginBracket++;
+        }
+        else if (this.instrucionVector.charAt(this.instructionCounter) == ']') {
+          endBracket++;
+        }
+
+        if (endBracket == beginBracket) {
+          break;
+        }
+        else {
+          this.instructionCounter++;
+        }
+      } 
     }
     else {
-      this.dqReturnStack.addFirst(instructionCounter - 1);
+      this.dqReturnJump.addFirst(this.instructionCounter);
     }
   }
 
 
   public void endLoop() {
-    if (!dqReturnStack.isEmpty()) {
-      this.instructionCounter = this.dqReturnStack.peek();
-      this.dqReturnStack.pop();
+    if (this.memory.readData() != 0) {
+      this.instructionCounter = this.dqReturnJump.peekFirst();
+      
+    }
+    else {
+      dqReturnJump.removeFirst();
     }
   }
 
@@ -167,14 +186,14 @@ public class Instance {
   }
 
   public Deque getDqReturnStack() {
-    return this.dqReturnStack;
+    return this.dqReturnJump;
   }
 
   public void intrepreterDebugLog() {
 
     StringBuilder tmp = new StringBuilder("");
     tmp.append(this.instrucionVector.charAt(this.instructionCounter - 1) + " ");
-    tmp.append("dq" + this.dqReturnStack + "; ");
+    tmp.append("dq" + this.dqReturnJump+ "; ");
     tmp.append("Dtata = " + this.memory.readData() + "; ");
     tmp.append("IC = " + (this.instructionCounter - 1) + "; ");
     tmp.append("Step = " + (this.stepCounter -1) + ";\n");

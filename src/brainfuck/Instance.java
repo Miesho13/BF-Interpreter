@@ -25,6 +25,7 @@ public class Instance {
   
   private Logger logger;
 
+  
   public Instance(int memorySize) {
 
     this.logger = Logger.getLogger(Instance.class.getName());
@@ -172,6 +173,7 @@ public class Instance {
     }
   }
 
+
   public String getIncturctionVector() {
     return instrucionVector;
   }
@@ -181,9 +183,6 @@ public class Instance {
     return this.instructionCounter;
   }
 
-  public Deque getDqReturnStack() {
-    return this.dqReturnJump;
-  }
 
   public void intrepreterDebugLog() {
 

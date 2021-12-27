@@ -1,36 +1,44 @@
 package brainfuck;
 
 import java.util.*;
-
-import javax.swing.border.EmptyBorder;
-
-import java.io.Console;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.io.File;
 import java.io.FileNotFoundException;
+
 
 public class Instance {
 
   private int instructionCounter;
 
+  private int stepCounter;
+
   private boolean isWorkingFlag;
 
   private String instrucionVector;
 
-  private Deque<Integer> dqReturnStack;
+  private Deque<Integer> dqReturnJump;
 
   private Memory memory;
 
   private Scanner userInput;
+  
+  private Logger logger;
 
-
+  
   public Instance(int memorySize) {
+
+    this.logger = Logger.getLogger(Instance.class.getName());
+
     this.instructionCounter = 0;
+
+    this.stepCounter = 0;
 
     this.isWorkingFlag = true;
 
     this.instrucionVector = "";
 
-    this.dqReturnStack = new LinkedList<Integer>();
+    this.dqReturnJump = new LinkedList<Integer>();
 
     this.memory = new Memory(memorySize);
 
@@ -38,18 +46,8 @@ public class Instance {
   }
 
 
-  public void stopInterpreter() {
+  public void terminate() {
     this.isWorkingFlag = false;
-  }
-
-
-  public String getIncturctionVector() {
-    return instrucionVector;
-  }
-
-
-  public int getInstructionCounter() {
-    return this.instructionCounter;
   }
 
 
@@ -60,35 +58,42 @@ public class Instance {
 
   public void beginLoop() {
     if (memory.readData() == 0) {
-      while (this.instrucionVector.charAt(instructionCounter) != ']') {
-        instructionCounter++;
-      }
-      
+      int endBracket = 0;
+      int beginBracket = 0;
+      while (true) {
+        if (this.instrucionVector.charAt(this.instructionCounter) == '[') {
+          beginBracket++;
+        }
+        else if (this.instrucionVector.charAt(this.instructionCounter) == ']') {
+          endBracket++;
+        }
+
+        if (endBracket == beginBracket) {
+          break;
+        }
+        else {
+          this.instructionCounter++;
+        }
+      } 
     }
     else {
-      this.dqReturnStack.addFirst(instructionCounter - 1);
+      this.dqReturnJump.addFirst(this.instructionCounter);
     }
   }
 
 
   public void endLoop() {
-    if (dqReturnStack.isEmpty()) {
-      ;
+    if (this.memory.readData() != 0) {
+      this.instructionCounter = this.dqReturnJump.peekFirst();
+      
     }
-    else
-    {
-      this.instructionCounter = this.dqReturnStack.peek();
-      this.dqReturnStack.pop();
+    else {
+      dqReturnJump.removeFirst();
     }
   }
 
-  public void printDequeue() {
-    System.out.print("DQ: "+this.dqReturnStack);
-  }
 
   public void oneStep() {
-    //System.console().printf("%c  ",instrucionVector.charAt(instructionCounter));
-  
     if (this.instrucionVector.length() != 0)
     {
       switch (this.instrucionVector.charAt(this.instructionCounter)) {
@@ -115,16 +120,19 @@ public class Instance {
           break;
         case ']':
           endLoop();
+          break;
+        case '\\':
+          terminate();
           break;    
         default:
-          stopInterpreter();
+          
           break;
       }
       this.instructionCounter++;
-      //System.console().printf("Memory value: %d | ", memory.readData());
+      this.stepCounter++;
     }
     else {
-      stopInterpreter();
+      terminate();
     }
   }
   
@@ -159,10 +167,33 @@ public class Instance {
 
     }
     catch (FileNotFoundException e) {
-      System.console().printf("File not found\n");
+      System.console().printf("BFInterpreter: fatal error: File not found\n");
       e.printStackTrace();
     
     }
+  }
+
+
+  public String getIncturctionVector() {
+    return instrucionVector;
+  }
+
+
+  public int getInstructionCounter() {
+    return this.instructionCounter;
+  }
+
+
+  public void intrepreterDebugLog() {
+
+    StringBuilder tmp = new StringBuilder("");
+    tmp.append(this.instrucionVector.charAt(this.instructionCounter - 1) + " ");
+    tmp.append("dq" + this.dqReturnJump+ "; ");
+    tmp.append("Dtata = " + this.memory.readData() + "; ");
+    tmp.append("IC = " + (this.instructionCounter - 1) + "; ");
+    tmp.append("Step = " + (this.stepCounter -1) + ";\n");
+    
+    logger.log(Level.INFO, tmp.toString());
   }
 
 }

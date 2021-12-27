@@ -24,7 +24,7 @@ public class BFInterpreter {
       }
     }
 
-    System.console().printf("\niterpreter Terminated");
+    System.console().printf("\niterpreter terminated");
   }
 
   static void noArgumentError() {
@@ -37,6 +37,6 @@ public class BFInterpreter {
   }
 
   static void helpFlag() {
-    System.console().printf("Usage: BFInterpreter [file to interpret]\n");
+    System.console().printf("Usage: BFInterpreter <file to interpret>\n");
   }
 }

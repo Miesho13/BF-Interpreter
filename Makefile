@@ -1,6 +1,6 @@
 # Compiler and flags
 CC      := gcc
-CFLAGS  := -Wall -Wextra -O2 -MMD -MP
+CFLAGS  := -g -Wall -Wextra -O2 -MMD -MP
 LDFLAGS :=
 
 # Directories

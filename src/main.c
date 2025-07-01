@@ -17,7 +17,6 @@ int main(int argc, char **argv) {
     }
     
     asm_out asm_file = crate_asm(&bf);
-    printf("%s", asm_file.buffer);
 
     if (save_out_asm(&asm_file) != 0) {
         return 3;

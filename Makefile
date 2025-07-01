@@ -6,7 +6,7 @@ LDFLAGS :=
 # Directories
 SRC_DIR := src
 OBJ_DIR := build
-BIN_DIR := bin
+BIN_DIR := build
 
 # Target name
 TARGET  := $(BIN_DIR)/bf
